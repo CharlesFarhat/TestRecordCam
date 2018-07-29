@@ -6,26 +6,31 @@ using namespace cv;
 
 
 int main() {
-
-
     int cameraNumber(0);
+    string directory = "";
+    int savingFrames;
+    int i(-2);
+
     std::cout << "What's your choice bitch " << std::endl;
-
-
     cin >> cameraNumber;
 
-    string directory;
-    cout << "Where to store images : ";
-    cin >> directory;
-    cout << "ok " << endl;
 
+    cout << "Are you willing to save camera frames ? YES == 1 NO == 0 : "
+    cin >> savingFrames;
+
+    if (savingFrames)
+    {
+        cout << "Where to store images : ";
+        cin >> directory;
+        cout << "ok " << endl;
+    }
 
     std::cout << "Camera used is : " <<cameraNumber << std::endl;
     cv::VideoCapture cap(cameraNumber);
     cap.set(CV_CAP_PROP_FRAME_WIDTH, 1280);
     cap.set(CV_CAP_PROP_FRAME_HEIGHT, 960);
 
-    int i(-2);
+
 
     while (true) {
         cv::Mat tmpImg;
@@ -36,8 +41,11 @@ int main() {
         ++i;
         cv::imshow("LOL", new_image);
 
-        string name = directory + std::to_string(i) + ".jpg";
-        cv::imwrite(name, new_image);
+        if (savingFrames)
+        {
+            string name = directory + std::to_string(i) + ".jpg";
+            cv::imwrite(name, new_image);
+        }
 
         char c = (char) cv::waitKey(25);
         if (c == 27)
